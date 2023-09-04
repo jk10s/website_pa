@@ -1,0 +1,12 @@
+node --version
+npm --version
+npm init -y
+npm install mysql2
+npm install express mysql2
+node server.js
+npm install ejs
+npm install express-session
+
+
+
+

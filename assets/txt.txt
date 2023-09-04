@@ -1,0 +1,44 @@
+-- Creación de la base de datos
+CREATE DATABASE nombre_de_la_base_de_datos;
+
+-- Selección de la base de datos
+USE nombre_de_la_base_de_datos;
+
+-- Creación de la tabla "usuarios"
+CREATE TABLE usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  tipo_usuario ENUM('normal', 'administrador') NOT NULL
+);
+
+-- Creación de la tabla "cursos"
+CREATE TABLE cursos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  descripcion TEXT,
+  fecha_inicio DATE,
+  fecha_fin DATE,
+  administrador_id INT,
+  FOREIGN KEY (administrador_id) REFERENCES usuarios (id)
+);
+
+
+
+-- Insertar usuarios 
+INSERT INTO usuarios (nombre, email, tipo_usuario)
+VALUES ('Carlos', 'carlos@example.com', 'normal'),
+       ('María', 'maria@example.com', 'normal'),
+       ('Javier', 'javier@example.com', 'normal'),
+       ('Laura', 'laura@example.com', 'normal'),
+       ('Andrés', 'andres@example.com', 'administrador');
+
+
+
+-- Insertar cursos
+INSERT INTO cursos (nombre, descripcion, fecha_inicio, fecha_fin, administrador_id)
+VALUES ('Programación en Python', 'Aprende a programar en Python desde cero.', '2023-06-01', '2023-07-15', 1),
+       ('Diseño gráfico digital', 'Descubre las técnicas de diseño gráfico digital.', '2023-07-01', '2023-08-15', 1),
+       ('Marketing Digital', 'Conviértete en experto en estrategias de marketing digital.', '2023-08-01', '2023-09-15', 2),
+       ('Inglés Avanzado', 'Mejora tus habilidades en el idioma inglés.', '2023-06-15', '2023-08-30', 2),
+       ('Desarrollo web con JavaScript', 'Aprende a crear aplicaciones web utilizando JavaScript.', '2023-07-15', '2023-09-30', 1);
