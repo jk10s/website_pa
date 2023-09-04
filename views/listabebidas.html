@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Menú de Discoteca</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+<body>
+    <h1>Menú de Discoteca</h1>
+
+    <h2>Buscar Producto</h2>
+    <input type="text" id="busquedaProducto" placeholder="Buscar producto">
+    <select id="selectProducto">
+        <option value="entrada-general">Entrada General</option>
+        <option value="mesa-vip">Mesa VIP</option>
+        <option value="botella-champagne">Botella de Champagne</option>
+        <option value="botella-vodka-premium">Botella de Vodka Premium</option>
+        <option value="botella-whisky-lujo">Botella de Whisky de Lujo</option>
+        <!-- Agrega más productos aquí -->
+    </select>
+    
+    <!-- Agregamos un label para mostrar la selección -->
+    <label for="busquedaProducto" id="labelProducto"></label>
+
+    <h2>Buscar Bebida</h2>
+    <input type="text" id="busquedaBebida" placeholder="Buscar bebida">
+    <select id="selectBebida">
+        <option value="cerveza">Cerveza</option>
+        <option value="vodka">Vodka</option>
+        <option value="whisky">Whisky</option>
+        <option value="tequila">Tequila</option>
+        <option value="ron">Ron</option>
+        <!-- Agrega más bebidas aquí -->
+    </select>
+    
+    <!-- Agregamos un label para mostrar la selección -->
+    <label for="busquedaBebida" id="labelBebida"></label>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function() {
+            var productos = [
+                "Entrada General",
+                "Mesa VIP",
+                "Botella de Champagne",
+                "Botella de Vodka Premium",
+                "Botella de Whisky de Lujo",
+                // Agrega más productos aquí
+            ];
+
+            $("#busquedaProducto").autocomplete({
+                source: productos,
+                select: function(event, ui) {
+                    // Actualizar el label con la selección
+                    $("#labelProducto").text(ui.item.value);
+                }
+            });
+
+            var bebidas = [
+                "Cerveza",
+                "Vodka",
+                "Whisky",
+                "Tequila",
+                "Ron",
+                // Agrega más bebidas aquí
+            ];
+
+            $("#busquedaBebida").autocomplete({
+                source: bebidas,
+                select: function(event, ui) {
+                    // Actualizar el label con la selección
+                    $("#labelBebida").text(ui.item.value);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

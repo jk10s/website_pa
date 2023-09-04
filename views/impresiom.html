@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Recibo de Venta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo {
+            max-width: 150px;
+            height: auto;
+        }
+        .venta-info {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .info-label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="ruta_del_logo.png" alt="Logo de la Empresa" class="logo">
+        <h1>Recibo de Venta</h1>
+    </div>
+    <div class="venta-info">
+        <p class="info-label">Fecha:</p>
+        <p>Fecha de la venta</p>
+        <p class="info-label">Número de Venta:</p>
+        <p>Número de la venta</p>
+        <p class="info-label">Cliente:</p>
+        <p>Nombre del cliente</p>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Producto 1</td>
+                <td>2</td>
+                <td>$50.00</td>
+                <td>$100.00</td>
+            </tr>
+            <!-- Agregar más filas de productos si es necesario -->
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">Total:</td>
+                <td>$200.00</td>
+            </tr>
+        </tfoot>
+    </table>
+    <div>
+        <p>Gracias por su compra.</p>
+    </div>
+</body>
+</html>

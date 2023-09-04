@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Cliente</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <header>
+        <nav class="bg-white shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <a href="/" class="logo me-auto"><img src="/img/logo4.png" alt="" class="w-44 h-auto"></a>
+                    <div class="flex space-x-4">
+                        <a class="text-gray-600 hover:text-blue-500" href="/inventario-productos">Inventario productos</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/clientes">Cliente</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/ventas">Ventas</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/perfil">Mi perfil</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/cerrar-sesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl font-bold mb-4">Editar Cliente</h1>
+        
+        <form method="POST" action="/editar-cliente/<%= cliente.IDCliente %>" class="bg-white p-6 rounded shadow-md">
+            <div class="mb-4">
+                <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" value="<%= cliente.Nombre %>" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+            </div>
+
+            <div class="mb-4">
+                <label for="telefono" class="block text-sm font-medium text-gray-700">Teléfono:</label>
+                <input type="text" id="telefono" name="telefono" value="<%= cliente.Telefono %>" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+            </div>
+
+            <div class="mb-4">
+                <label for="correo" class="block text-sm font-medium text-gray-700">Correo Electrónico:</label>
+                <input type="email" id="correo" name="correo" value="<%= cliente.CorreoElectronico %>" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+            </div>
+
+            <div class="mb-4">
+                <label for="otros" class="block text-sm font-medium text-gray-700">Otros Detalles:</label>
+                <textarea id="otros" name="otros" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"><%= cliente.OtrosDetalles %></textarea>
+            </div>
+
+            <div class="flex justify-end">
+                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                    Guardar Cambios
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

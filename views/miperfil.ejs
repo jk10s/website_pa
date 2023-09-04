@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Mi Perfil</title>
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <header>
+        <nav class="bg-white shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <a href="/" class="logo me-auto"><img src="/img/logo4.png" alt="" class="w-44 h-auto"></a>
+                    <div class="flex space-x-4">
+                        <a class="text-gray-600 hover:text-blue-500" href="/inventario-productos">Inventario productos</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/ventas">Ventas</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/perfil">Mi perfil</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/cerrar-sesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <main>
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                <div class="px-4 py-5 sm:px-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Mi Perfil</h3>
+                </div>
+                <div class="border-t border-gray-200">
+                    <dl>
+                        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">Nombre</dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= nombre %></dd>
+                        </div>
+                        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">Correo Electrónico</dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= email %></dd>
+                        </div>
+                        <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt class="text-sm font-medium text-gray-500">Tipo de Cuenta</dt>
+                            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"><%= tipoCuenta %></dd>
+                        </div>
+                        <!-- Agrega aquí más detalles de perfil como sea necesario -->
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<!-- ventas-pendientes.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Agrega tus encabezados y enlaces a hojas de estilo aquí -->
+</head>
+<body>
+    <h1>Ventas Pendientes</h1>
+    <ul>
+        <% ventasPendientes.forEach(venta => { %>
+            <li>
+                Venta ID: <%= venta.IDVenta %>
+                <!-- Agrega más detalles de la venta que desees mostrar -->
+                <form action="/marcar-venta-finalizada" method="POST">
+                    <input type="hidden" name="ventaId" value="<%= venta.IDVenta %>">
+                    <button type="submit">Marcar como finalizada</button>
+                </form>
+            </li>
+        <% }); %>
+    </ul>
+</body>
+</html>

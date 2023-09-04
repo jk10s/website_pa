@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Encabezado y metadatos aquí -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Cambia el fondo de las filas pendientes a un tono más claro de rojo */
+        tr.pendiente {
+            background-color: #f8d4d4;
+            /* Color rojo claro */
+        }
+
+
+
+        /* Estilo para el botón Marcar como Finalizada */
+        .marcar-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .marcar-btn.pendiente {
+            background-color: #FF4A4A;
+            /* Color rojo */
+            color: white;
+        }
+
+        .marcar-btn.finalizada {
+            background-color: #4CAF50;
+            /* Color verde */
+            color: white;
+        }
+
+        .marcar-btn:hover {
+            background-color: #45A049;
+            /* Color verde más oscuro al pasar el cursor */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <header>
+        <nav class="bg-white shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <a href="/" class="logo me-auto"><img src="/img/logo4.png" alt="" class="w-44 h-auto"></a>
+                    <div class="flex space-x-4">
+                        <a class="text-gray-600 hover:text-blue-500" href="/inventario-productos">Inventario
+                            productos</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/ventas">Ventas</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/perfil">Mi perfil</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/cerrar-sesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contenido de la página -->
+    <div class="max-w-6xl mx-auto p-8">
+        <h1 class="text-3xl font-bold mb-4">Ventas Registradas</h1>
+        <a href="/realizar-venta"
+            class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200 ease-in-out">Agregar
+            Nueva Venta</a>
+            <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
+                <thead class="bg-gray-200 text-gray-700">
+                    <tr>
+                        <th class="py-2 px-4">ID Venta</th>
+                        <th class="py-2 px-4">Fecha de Venta</th>
+                        <th class="py-2 px-4">Cliente</th>
+                        <th class="py-2 px-4">Extra</th>
+                        <th class="py-2 px-4">Total Final</th>
+                        <th class="py-2 px-4">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% ventas.forEach(venta => { %>
+                        <tr class="<%= venta.Estado === 'pendiente' ? 'pendiente' : 'finalizada' %> hover:bg-gray-100">
+                            <td class="py-2 px-4"><%= venta.IDVenta %></td>
+                            <td class="py-2 px-4">
+                                <%= moment(venta.FechaVenta).format('D/M/YYYY, h:mm:ss a') %>
+                                <a href="/editar-venta/<%= venta.IDVenta %>" class="text-blue-800 font-semibold hover:underline mr-2">Editar</a>
+
+
+                            </td>
+                            <td class="py-2 px-4"><%= venta.Cliente %></td>
+                            <td class="py-2 px-4">$<%= parseFloat(venta.TotalExtra).toFixed(2) %></td>
+                            <td class="py-2 px-4">$<%= (parseFloat(venta.TotalVenta) + parseFloat(venta.TotalExtra)).toFixed(2) %></td>
+                            <td class="py-2 px-4">
+                                <form action="/marcar-venta-finalizada" method="POST">
+                                    <input type="hidden" name="ventaId" value="<%= venta.IDVenta %>">
+                                    <button type="submit" class="marcar-btn <%= venta.Estado %> text-sm">
+                                        <%= venta.Estado === 'pendiente' ? 'Marcar Finalizada' : 'Finalizada' %>
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="py-2 px-4">
+                                <!-- ... (código existente) ... -->
+                                <a href="/ver-detalles-venta/<%= venta.IDVenta %>" class="text-blue-800 font-semibold hover:underline">Imprimir</a>
+                            </td>
+                            
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+    </div>
+</body>
+
+</html>

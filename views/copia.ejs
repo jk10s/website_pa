@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Encabezado y metadatos aquí -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <header>
+        <nav class="bg-white shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <a href="/" class="logo me-auto"><img src="/img/logo4.png" alt="" class="w-44 h-auto"></a>
+                    <div class="flex space-x-4">
+                        <a class="text-gray-600 hover:text-blue-500" href="/inventario-productos">Inventario
+                            productos</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/ventas">Ventas</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/perfil">Mi perfil</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/cerrar-sesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- Contenido de la página -->
+    <div class="max-w-xl mx-auto p-8 bg-white rounded-lg shadow-lg">
+        <h1 class="text-3xl font-bold mb-4">Realizar Venta</h1>
+
+        <form method="POST" action="/guardar-venta">
+            <label for="cliente" class="block mb-2">Cliente:</label>
+            <!-- Cambia el campo de selección por un campo de texto -->
+
+            <input type="text" id="cliente" name="cliente" class="w-full px-4 py-2 mb-4 border rounded-lg"
+                placeholder="Nombre del cliente">
+
+
+            <label for="producto" class="block mb-2">Productos:</label>
+            <div class="relative mb-4">
+                <input id="producto-search" type="text" placeholder="Buscar producto"
+                    class="w-full px-4 py-2 border rounded-lg">
+                <ul id="producto-list"
+                    class="absolute left-0 mt-1 w-full bg-white border border-gray-300 rounded-lg hidden"></ul>
+            </div>
+
+            <label for="producto" class="block mb-2">Productos:</label>
+            <div class="flex mb-4">
+                <select id="producto" name="productos" class="w-3/4 px-4 py-2 mr-2 border rounded-lg" required>
+                    <option value="" selected disabled>Selecciona un producto</option>
+                    <% productos.forEach(producto => { %>
+                    <option value="<%= producto.IDProducto %>" data-precio="<%= producto.PrecioProducto %>">
+                        <%= producto.NombreProducto %> - <%= producto.PrecioProducto %>
+                    </option>
+                    <% }); %>
+                </select>
+
+                <input type="number" id="cantidad" name="cantidad" value="1" class="w-1/4 px-4 py-2 border rounded-lg"
+                    required>
+            </div>
+
+
+
+            <button type="button" id="agregarProducto"
+                class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg mb-4">
+                Agregar Producto
+            </button>
+
+
+
+            <ul id="detalleVentaList" class="mb-4"></ul>
+
+            <label for="totalVenta" class="block mb-2">Total de la Venta:</label>
+            <input type="text" id="totalVenta" name="totalVenta" readonly
+                class="w-full px-4 py-2 mb-4 border rounded-lg">
+
+            <label for="costosExtra" class="block mb-2">Costos Adicionales:</label>
+            <input type="number" id="costosExtra" name="costosExtra" step="0.01"
+                class="w-full px-4 py-2 mb-4 border rounded-lg" value="0">
+            <button type="button" id="agregarCosto"
+                class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg mb-4">
+                Agregar Costo Adicional
+            </button>
+            <label for="totalFinal" class="block mb-2">Total Final:</label>
+            <input type="text" id="totalFinal" name="totalFinal" readonly
+                class="w-full px-4 py-2 mb-4 border rounded-lg">
+            <label for="metodoPago" class="block mb-2">Método de Pago:</label>
+            <select id="metodoPago" name="metodoPago" class="w-full px-4 py-2 mb-4 border rounded-lg" required>
+                <option value="" selected disabled>Selecciona un método de pago</option>
+                <option value="efectivo">Efectivo</option>
+                <option value="tarjeta">Tarjeta</option>
+                <option value="codigo_qr">Código QR</option>
+            </select>
+
+            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg"
+                onclick="return validarVenta();">
+                Realizar Venta
+            </button>
+        </form>
+
+
+
+        <script>
+            const productosAgregados = [];
+            let costosExtra = 0;
+
+            function agregarProducto() {
+                const clienteSelect = document.getElementById('cliente');
+                const productoSelect = document.getElementById('producto');
+                const cantidadInput = document.getElementById('cantidad');
+
+                let clienteSeleccionado = clienteSelect.value;
+
+                if (clienteSeleccionado === '') {
+                    const fechaActual = new Date();
+                    const formattedFecha = fechaActual.toISOString().substring(0, 16).replace(/[-T:]/g, '/');
+                    clienteSeleccionado = `cliente ${formattedFecha}`;
+                    clienteSelect.value = clienteSeleccionado;
+                }
+
+                const productoSeleccionado = productoSelect.value;
+                const cantidad = parseInt(cantidadInput.value);
+                // Actualizar productosAgregados
+                productosAgregados[productoSeleccionado] = cantidad;
+                const stockProducto = parseInt(productoSelect.options[productoSelect.selectedIndex].getAttribute(
+                    'data-stock'));
+                const precio = parseFloat(productoSelect.options[productoSelect.selectedIndex].getAttribute(
+                    'data-precio'));
+
+                if (cantidad > stockProducto) {
+                    alert(`No hay suficiente stock para el producto ${productoSeleccionado}.`);
+                    return;
+                }
+
+                const nombreProducto = productoSelect.options[productoSelect.selectedIndex].text;
+
+                if (!productosAgregados[productoSeleccionado]) {
+                    // Si el producto no ha sido agregado previamente, se crea una nueva entrada en el objeto productosAgregados.
+                    productosAgregados[productoSeleccionado] = {
+                        cantidad: cantidad,
+                        nombre: nombreProducto,
+                        precio: precio
+                    };
+                } else {
+                    // Si el producto ya ha sido agregado, se incrementa la cantidad acumulada.
+                    productosAgregados[productoSeleccionado].cantidad += cantidad;
+                }
+
+                productoSelect.options[productoSelect.selectedIndex].setAttribute('data-stock', stockProducto -
+                    cantidad);
+
+                actualizarListaDetallesVenta();
+                actualizarTotales();
+            }
+
+            function actualizarListaDetallesVenta() {
+                const detalleVentaList = document.getElementById('detalleVentaList');
+                detalleVentaList.innerHTML = '';
+
+                for (const productoID in productosAgregados) {
+                    if (productosAgregados.hasOwnProperty(productoID)) {
+                        const producto = productosAgregados[productoID];
+                        detalleVentaList.innerHTML +=
+                            `<li>${producto.cantidad} x ${producto.nombre} - Total: $${(producto.cantidad * producto.precio).toFixed(2)}</li>`;
+                    }
+                }
+            }
+
+            function actualizarTotales() {
+                const totalVentaInput = document.getElementById('totalVenta');
+                const totalFinalInput = document.getElementById('totalFinal');
+
+                const totalVenta = Object.values(productosAgregados).reduce((total, producto) => total + (producto
+                    .cantidad * producto.precio), 0);
+                totalVentaInput.value = `$${totalVenta.toFixed(2)}`;
+
+                const costosExtraInput = document.getElementById('costosExtra');
+                const costosExtra = parseFloat(costosExtraInput.value.trim().replace('$', '')) || 0;
+                const totalFinal = totalVenta + costosExtra;
+                totalFinalInput.value = `$${totalFinal.toFixed(2)}`;
+            }
+
+            function validarVenta() {
+                const productosAgregados = productosAgregados || [];
+
+                if (Object.keys(productosAgregados).length === 0) {
+                    alert('Debes seleccionar al menos un producto antes de realizar la venta.');
+                    return false;
+                }
+
+                return true;
+            }
+
+
+            function realizarVenta() {
+                const productosVendidos = Object.entries(productosAgregados);
+
+                const productos = productosVendidos.map(([productoID, producto]) => productoID);
+                const cantidades = productosVendidos.map(([productoID, producto]) => producto.cantidad);
+
+                const totalVentaInput = document.getElementById('totalVenta');
+                const costosExtraInput = document.getElementById('costosExtra');
+                const totalFinalInput = document.getElementById('totalFinal');
+                const metodoPagoSeleccionado = document.getElementById('metodoPago').value;
+
+                fetch('/guardar-venta', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            cliente: clienteSeleccionado,
+                            productos: productos.join(','),
+                            cantidad: cantidades.join(','),
+                            totalVenta: totalVentaInput.value,
+                            costosExtra: costosExtraInput.value,
+                            totalFinal: totalFinalInput.value,
+                            metodoPago: metodoPagoSeleccionado,
+                            productosAgregados: productosAgregados,
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Manejar la respuesta del servidor si es necesario
+                        console.log(data);
+                    })
+                    .catch(error => {
+                        console.error('Error al realizar la venta:', error);
+                    });
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const agregarProductoBtn = document.getElementById('agregarProducto');
+                const agregarCostoBtn = document.getElementById('agregarCosto');
+                const realizarVentaBtn = document.getElementById('realizarVenta');
+
+                agregarProductoBtn.addEventListener('click', agregarProducto);
+                realizarVentaBtn.addEventListener('click', realizarVenta);
+
+
+                agregarCostoBtn.addEventListener('click', () => {
+                    const costosExtraInput = document.getElementById('costosExtra');
+                    const costoExtraValue = parseFloat(costosExtraInput.value.trim().replace('$',
+                        '')) || 0;
+
+                    if (!isNaN(costoExtraValue)) {
+                        costosExtra += costoExtraValue;
+                        costosExtraInput.value = costosExtra.toFixed(2);
+
+                        actualizarTotales();
+                    } else {
+                        console.error('El valor de costos adicionales no es válido.');
+                    }
+                });
+
+                const ventaForm = document.querySelector('form');
+                ventaForm.addEventListener('submit', (event) => {
+                    const clienteInput = document.getElementById('cliente');
+                    let clienteSeleccionado = clienteInput.value.trim();
+
+                    if (clienteSeleccionado === '') {
+                        const fechaActual = new Date();
+                        const formattedFecha = fechaActual.toISOString().substring(0, 16).replace(
+                            /[-T:]/g, '/');
+                        clienteSeleccionado = `cliente ${formattedFecha}`;
+                        clienteInput.value = clienteSeleccionado;
+                    }
+                });
+            });
+        </script>
+
+
+
+</body>
+
+</html>

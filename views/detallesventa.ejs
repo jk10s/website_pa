@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Tus metaetiquetas, enlaces a CSS, etc. aquí -->
+</head>
+<body>
+    <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto mt-10">
+        <h1 class="text-3xl font-semibold mb-6">Detalles de la Venta</h1>
+    
+        <!-- Tabla de detalles de la venta -->
+        <table class="w-full table-auto">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="py-2">ID Detalle Venta</th>
+                    <th class="py-2">ID Producto</th>
+                    <th class="py-2">Precio Unitario</th>
+                    <th class="py-2">Cantidad Vendida</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (const detalle of detallesVenta) { %>
+                    <tr>
+                        <td class="border px-4 py-2"><%= detalle.IDDetalleVenta %></td>
+                        <td class="border px-4 py-2"><%= detalle.IDProducto %></td>
+                        <td class="border px-4 py-2">$<%= detalle.PrecioUnitario.toFixed(2) %></td>
+                        <td class="border px-4 py-2"><%= detalle.CantidadVendida %></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+  
+    </div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <header>
+        <nav class="bg-white shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <a href="/" class="logo me-auto"><img src="/img/logo4.png" alt="" class="w-44 h-auto"></a>
+                    <div class="flex space-x-4">
+                        <a class="text-gray-600 hover:text-blue-500" href="/inventario-productos">Inventario productos</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/clientes">Cliente</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/ventas">Ventas</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/perfil">Mi perfil</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/cerrar-sesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container mx-auto p-8">
+        <h1 class="text-3xl font-bold text-center mb-8 text-blue-600">Generar Reporte</h1>
+        <form action="/generar-reporte" method="post" class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+            <div class="mb-4">
+                <label for="tipoReporte" class="block text-sm font-medium text-gray-700">Tipo de Reporte:</label>
+                <select name="tipoReporte" id="tipoReporte" class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200 focus:border-blue-300 transition">
+                    <option value="diario">Diario</option>
+                    <option value="semanal">Semanal</option>
+                    <option value="mensual">Mensual</option>
+                </select>
+            </div>
+            
+            <!-- Campo de entrada de fecha para el reporte mensual -->
+            <div id="campoFecha" class="mb-4" style="display: none;">
+                <label for="fechaReporte" class="block text-sm font-medium text-gray-700">Fecha:</label>
+                <input type="month" name="fechaReporte" id="fechaReporte" class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200 focus:border-blue-300 transition">
+            </div>
+            
+            <div class="text-center">
+                <button type="submit" class="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-200 focus:border-blue-300 transition">Generar Reporte</button>
+            </div>
+        </form>
+    
+        <% if (reporte) { %>
+            <div class="mt-8 max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold text-blue-600 mb-4">Reporte</h2>
+                <p class="text-sm text-gray-700">Tipo de Reporte: <%= reporte.tipoReporte %></p>
+                
+                <% if (typeof reporte.totalVentas === 'number') { %>
+                    <p class="text-sm text-gray-700">Total de Ventas: <%= reporte.totalVentas.toFixed(2) %></p>
+                <% } else { %>
+                    <p class="text-sm text-gray-700">Total de Ventas: Error en los datos</p>
+                <% } %>
+    
+                <!-- Mostrar más detalles del reporte si es necesario -->
+            </div>
+        <% } %>
+    </div>
+    
+
+        
+    </div>
+</body>
+<script>
+    document.getElementById('tipoReporte').addEventListener('change', function() {
+        const campoFecha = document.getElementById('campoFecha');
+        campoFecha.style.display = this.value === 'mensual' ? 'block' : 'none';
+    });
+</script>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Iniciar sesion - La Patrona</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/img/favicon.png" rel="icon">
+  <link href="/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/vendor/animate.css/animate.min.css" rel="stylesheet">
+  <link href="/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="/css/style.css" rel="stylesheet">
+  
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+
+      <a href="/" class="logo me-auto"><img src="/img/logo4.png" alt="" class="img-fluid"></a>
+
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          <li><a href="/">Inicio</a></li>
+          <li><a href="courses.html">Eventos</a></li>
+          <li><a href="about.html">¿Quienes somos?</a></li>
+
+          <li><a href="usuarios.html">Registrarse</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+      <a  href="sesion.html" class="get-started-btn">Iniciar sesion</a>
+
+    </div>
+  </header><!-- End Header -->
+
+
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs" data-aos="fade-in">
+      <div class="container">
+        <h2>Iniciar sesión</h2>
+        
+      </div>
+    </div><!-- End Breadcrumbs -->
+  
+    <!-- ======= Events Section ======= -->
+    <section style="background-color: #f8f9fa; padding: 80px 0;">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <h2 style="color: #0b245a; font-size: 36px; font-weight: bold; margin-bottom: 5rem;">Iniciar sesión <span style="color: #e63946;">Ahora</span></h2>
+          </div>
+        </div>
+        <div class="row">
+          <% if (mensajeError) { %>
+            <p style="color: #e63946;"><%= mensajeError %></p>
+          <% } %>
+          <div class="col-lg-6 offset-lg-3">
+            <form method="POST" action="/iniciar-sesion">
+              <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+  </main><!-- End #main -->
+  
+
+  
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6 footer-contact">
+            <h3>La Patrona</h3>
+            <p>
+              Eduacation<br>
+              Avaitable<br>
+              every one<br><br>
+              <strong>inquietudes:</strong> a<br>
+              <strong>Email:</strong> info@lapatrona.com<br>
+            </p>
+          </div>
+
+          <div class="col-lg-2 col-md-6 footer-links">
+            <h4>Links</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Inicio</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">¿Quienes somos?</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Eventos</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Iniciar sesion</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>Sobre Learnig4all</h4>
+            
+            <p>Podrás construir en equipos de proyectos del mundo real con metodologías y herramientas ágiles Scrum</p>
+ 
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-newsletter">
+            <h4>Asiste en nuestra dicoteca</h4>
+            <p>opiniiones</p>
+            <p>preguntas frecuentes</p>
+            <form action="" method="post">
+              <input type="email" name="email"><input type="submit" value="Subscribe">
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container d-md-flex py-4">
+
+      <div class="me-md-auto text-center text-md-start">
+        <div class="copyright">
+          &copy; Copyright <strong><span>La Patrona</span></strong>. Lapatrona@2023 Todos los derechos reservados
+        </div>
+        <div class="credits">
+
+          hecho con amor para el mundo
+        </div>
+      </div>
+      <div class="social-links text-center text-md-right pt-3 pt-md-0">
+        <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+        <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+        <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+        <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+        <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/vendor/purecounter/purecounter.js"></script>
+  <script src="/vendor/aos/aos.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="/js/main.js"></script>
+
+</body>
+
+</html>

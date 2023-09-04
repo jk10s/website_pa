@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Reportes</title>
+    <!-- Agrega enlaces a tus estilos de Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <header>
+        <nav class="bg-white shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <a href="/" class="logo me-auto"><img src="/img/logo4.png" alt="" class="w-44 h-auto"></a>
+                    <div class="flex space-x-4">
+                        <!-- <a class="text-gray-600 hover:text-blue-500" href="/iniciar-sesion">Admininistrador</a> -->
+                        <a class="text-gray-600 hover:text-blue-500" href="/inventario-productos">Inventario
+                            productos</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/ventas">Ventas</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/perfil">Mi perfil</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/cerrar-sesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto mt-10">
+        <h1 class="text-3xl font-semibold mb-6">Generar Reportes</h1>
+
+        <!-- Botones de generación predefinida -->
+        <div class="space-x-2 mb-6">
+            <form action="/generar-reporte" method="post">
+                <input type="hidden" name="reporteDiario" value="true">
+                <input type="date" name="fechaReporteDiario" class="p-2 border rounded">
+                <button type="submit"
+                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+                    onclick="return validarFechaReporteDiario()">Generar Informe Diario</button>
+            </form>
+            <form action="/generar-reporte" method="post">
+                <input type="hidden" name="reporteSemanal" value="true">
+                <button type="submit"
+                    class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition duration-300">Generar
+                    Informe Semanal</button>
+            </form>
+            <form action="/generar-reporte" method="post">
+                <input type="hidden" name="reporteMensual" value="true">
+                <button type="submit"
+                    class="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600 transition duration-300">Generar
+                    Informe Mensual</button>
+            </form>
+        </div>
+
+        <!-- Tabla de resultados -->
+        <table class="w-full table-auto">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="py-2">ID Venta</th>
+                    <th class="py-2">Fecha</th>
+                    <th class="py-2">Nombre del Cliente</th>
+                    <th class="py-2">Ganancia Total</th>
+                    <th class="py-2">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (const reporte of reportes) { %>
+                <tr>
+                    <td class="border px-4 py-2"><%= reporte.IDVenta %></td>
+                    <td class="border px-4 py-2"><%= reporte.Fecha %></td>
+                    <td class="border px-4 py-2"><%= reporte.NombreCliente %></td>
+                    <td class="border px-4 py-2">$<%= reporte.GananciaTotal.toFixed(2) %></td>
+                    <td class="border px-4 py-2">
+                        <!-- Enlace al detalle de la venta -->
+                        <a href="/detalles-venta/<%= reporte.IDVenta %>" class="text-blue-500">Ver Venta Detallada</a>
+                    </td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <!-- Mostrar el total de ganancias -->
+        <div class="mt-6 text-center">
+            <p class="text-2xl font-bold text-black">Total de Ganancias: $<span id="totalGanancias" class="text-green-600"></span></p>
+        </div>
+        
+        
+        
+
+
+    </div>
+
+    <script>
+        function validarFechaReporteDiario() {
+            const fechaSeleccionada = document.querySelector('input[name="fechaReporteDiario"]').value;
+            if (!fechaSeleccionada) {
+                alert('Debes seleccionar la fecha para generar el informe diario.');
+                return false;
+            }
+            return true;
+        }
+        // Esta función se ejecuta cuando se carga la página
+        document.addEventListener("DOMContentLoaded", function () {
+        const gananciasCells = document.querySelectorAll("tbody td:nth-child(4)");
+        let totalGanancias = 0;
+
+        gananciasCells.forEach(cell => {
+            const ganancia = parseFloat(cell.textContent.replace("$", ""));
+            if (!isNaN(ganancia)) {
+                totalGanancias += ganancia;
+            }
+        });
+
+        const totalGananciasElement = document.getElementById("totalGanancias");
+        if (totalGananciasElement) {
+            totalGananciasElement.textContent = totalGanancias.toFixed(2);
+        }
+    });
+    </script>
+
+
+    <!-- Agrega tus scripts aquí si es necesario -->
+</body>
+
+</html>

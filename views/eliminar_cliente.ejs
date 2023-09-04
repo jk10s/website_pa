@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Encabezado y metadatos aquí -->
+</head>
+<body>
+    <!-- Contenido de la página -->
+    <h1>Eliminar Cliente</h1>
+    
+    <p>¿Estás seguro de que deseas eliminar al cliente <%= cliente.Nombre %>?</p>
+    
+    <form method="POST" action="/eliminar-cliente/<%= cliente.IDCliente %>">
+        <button type="submit">Eliminar</button>
+    </form>
+</body>
+</html>

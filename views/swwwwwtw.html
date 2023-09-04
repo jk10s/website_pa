@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SweetAlert2 Demo</title>
+  <!-- Referencia al script de SweetAlert2 a través de CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+<button id="mostrar-mensaje">Mostrar Mensaje</button>
+
+<script>
+  document.getElementById('mostrar-mensaje').addEventListener('click', () => {
+    Swal.fire({
+      title: 'Mensaje de SweetAlert2',
+      text: 'Este es un mensaje de ejemplo utilizando SweetAlert2',
+      icon: 'success',
+      confirmButtonText: 'Aceptar'
+    });
+  });
+</script>
+
+</body>
+</html>

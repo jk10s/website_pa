@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario de Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+    <header>
+        <nav class="bg-white shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <a href="/" class="logo me-auto"><img src="/img/logo4.png" alt="" class="w-44 h-auto"></a>
+                    <div class="flex space-x-4">
+                        <!-- <a class="text-gray-600 hover:text-blue-500" href="/iniciar-sesion">Admininistrador</a> -->
+                        <a class="text-gray-600 hover:text-blue-500" href="/inventario-productos">Inventario productos</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/ventas">Ventas</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/perfil">Mi perfil</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/cerrar-sesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+<!-- ... (código anterior) ... -->
+
+<div class="bg-white p-6 shadow-md rounded-md mx-auto max-w-2xl mt-8">
+    <h1 class="text-2xl font-semibold mb-4">Inventario de Productos</h1>
+
+    <a href="/agregar-producto" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200 ease-in-out">Agregar Nuevo Producto</a>
+
+    <table class="w-full mt-4">
+        <thead>
+            <tr class="bg-gray-200">
+                <th class="py-2 px-4">ID Prod</th>
+                <th class="py-2 px-4">Nombre</th>
+                <th class="py-2 px-4">Precio Compra</th> <!-- Nuevo campo Precio Compra -->
+                <th class="py-2 px-4">Precio Venta</th>
+                <th class="py-2 px-4">Cantidad en Stock</th>
+                <th class="py-2 px-4">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% productos.forEach(producto => { %>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4"><%= producto.IDProducto %></td>
+                    <td class="py-2 px-4"><%= producto.NombreProducto %></td>
+                    <td class="py-2 px-4">$<%= parseFloat(producto.PrecioCompra).toFixed(2) %></td> <!-- Mostrar Precio Compra -->
+                    <td class="py-2 px-4">$<%= parseFloat(producto.PrecioProducto).toFixed(2) %></td>
+                    <td class="py-2 px-4"><%= producto.CantidadStock %></td>
+                    <td class="py-2 px-4 space-x-2">
+                        <div class="flex">
+                            <a href="/editar-producto/<%= producto.IDProducto %>" class="bg-green-500 text-white py-1 px-2 rounded-md hover:bg-green-600 transition duration-200 ease-in-out">Editar</a>
+                            <a href="/eliminar-producto/<%= producto.IDProducto %>" class="bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600 transition duration-200 ease-in-out">Eliminar</a>
+                        </div>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<!-- ... (código posterior) ... -->
+
+    
+</body>
+</html>

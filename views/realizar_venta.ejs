@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realizar Venta</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <header class="mb-4">
+        <nav class="bg-white shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <a href="/" class="logo me-auto"><img src="/img/logo4.png" alt="" class="w-44 h-auto"></a>
+                    <div class="flex space-x-4">
+                        <a class="text-gray-600 hover:text-blue-500" href="/inventario-productos">Inventario
+                            productos</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/ventas">Ventas</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/perfil">Mi perfil</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/cerrar-sesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="max-w-3xl mx-auto p-8 bg-white rounded-lg shadow-lg">
+        <h1 class="text-3xl font-bold mb-4">Realizar Venta</h1>
+        <form method="POST" action="/guardar-venta" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="col-span-1">
+                <label for="cliente" class="block mb-2">Cliente:</label>
+                <input type="text" id="cliente" name="cliente" class="w-full px-4 py-2 border rounded-lg" placeholder="Nombre del cliente">
+            </div>
+            <div class="col-span-1">
+                <label for="productoInput" class="block mb-2">Productos:</label>
+                <input type="text" id="productoInput" name="productoInput" class="w-full px-4 py-2 border rounded-lg" placeholder="Buscar producto">
+            </div>
+            <div class="col-span-1">
+                <label for="cantidad" class="block mb-2">Cantidad:</label>
+                <input type="number" id="cantidad" name="cantidad" value="1" class="w-full px-4 py-2 border rounded-lg" required>
+            </div>
+            <div class="col-span-3">
+                <button type="button" id="agregarProducto" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
+                    Agregar Producto
+                </button>
+            </div>
+            <div class="col-span-3">
+                <h3 class="text-xl font-semibold mb-2">Productos Agregados</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full table-auto border-collapse">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="py-2 px-4">Cantidad</th>
+                                <th class="py-2 px-4">Producto</th>
+                                <th class="py-2 px-4">Precio Unitario</th>
+                                <th class="py-2 px-4">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detalleVentaList">
+                            <!-- Filas de productos agregados se insertarán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-span-2">
+                <label for="costosExtra" class="block">Costos Adicionales:</label>
+                <input type="number" id="costosExtra" name="costosExtra" step="0.01" class="w-26 px-4 py-2 border rounded-lg" value="0">
+                <button type="button" id="agregarCosto" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
+                    Agregar Extra
+                </button>
+            </div>
+            <div class="col-span-1 flex items-center justify-end">
+                <label for="totalVenta" class="mr-2 block">Subtotal:</label>
+                <input type="text" id="totalVenta" name="totalVenta" readonly class="w-28 px-2 py-2 border rounded-lg">
+            </div>
+            <div class="col-span-2">
+                <label for="metodoPago" class="block mb-2">Método de Pago:</label>
+                <select id="metodoPago" name="metodoPago" class="w-38 px-4 py-2 border rounded-lg" required>
+                    <option value="" disabled>Selecciona un método de pago</option>
+                    <option value="efectivo" selected>Efectivo</option>
+                    <option value="tarjeta">Tarjeta</option>
+                    <option value="codigo_qr">Código QR</option>
+                </select>
+            </div>
+            <div class="col-span-1 flex items-center justify-end">
+                <label for="totalFinal" class="mr-2 font-bold text-gray-800">Total:</label>
+                <input type="text" id="totalFinal" name="totalFinal" readonly class="w-28 px-2 py-2 border rounded-lg">
+            </div>
+            <div class="col-span-2">
+                <div class="flex items-center">
+                    <input type="checkbox" id="ventaCancelada" name="estado" class="mr-2" checked>
+                    <label for="ventaCancelada">Venta Cancelada</label>
+                </div>
+            </div>
+            <div class="col-span-1 flex justify-center items-center">
+                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg" onclick="return validarVenta();">
+                    Realizar Venta
+                </button>
+            </div>
+            <input type="hidden" id="productosAgregados" name="productosAgregados">
+        </form>
+    </div>
+    
+
+        <script>
+            let contadorProductos = 1; // Contador para asignar claves únicas a los productos
+            const productosAgregados = {};
+            let costosExtra = 0;
+
+            $(document).ready(function () {
+                $("#productoInput").autocomplete({
+                    source: function (request, response) {
+                        // Realiza una solicitud AJAX para obtener los resultados de productos desde tu servidor.
+                        $.ajax({
+                            url: "/obtener-detalles-producto", // Utiliza el nuevo endpoint para obtener detalles de productos
+                            method: "GET",
+                            data: {
+                                searchTerm: request
+                                    .term // La cadena de búsqueda del usuario
+                            },
+                            success: function (data) {
+                                // Parsea los resultados recibidos desde el servidor y pasa los nombres de los productos al autocompletado.
+                                var productos = data.productos.map(function (producto) {
+                                    return producto.NombreProducto;
+                                });
+                                response(productos);
+                            }
+                        });
+                    },
+                    minLength: 1, // Mínimo de caracteres antes de mostrar resultados
+                    select: function (event, ui) {
+                        // Cuando se selecciona un producto, enfoca automáticamente el campo de cantidad
+                        $("#cantidad").focus();
+                    }
+                });
+            });
+
+            function agregarProducto() {
+                const clienteInput = document.getElementById('cliente');
+                const productoInput = document.getElementById('productoInput');
+                const cantidadInput = document.getElementById('cantidad');
+                const ventaCanceladaCheckbox = document.getElementById('ventaCancelada'); // Nuevo campo
+                const estadoVenta = ventaCanceladaCheckbox.checked ? 'finalizada' : 'pendiente';
+
+                let clienteSeleccionado = clienteInput.value;
+
+                if (clienteSeleccionado === '') {
+                    const fechaActual = new Date();
+                    const formattedFecha = fechaActual.toISOString().substring(0, 16).replace(/[-T:]/g, '/');
+                    clienteSeleccionado = `cliente ${formattedFecha}`;
+                    clienteInput.value = clienteSeleccionado;
+                }
+
+                const productoSeleccionado = productoInput.value;
+                const cantidad = parseInt(cantidadInput.value);
+                const ventaCancelada = ventaCanceladaCheckbox.checked; // Nuevo campo
+
+                // Comprobación de que se ha ingresado un producto válido y una cantidad válida
+                if (!productoSeleccionado.trim()) {
+                    alert('Por favor, ingrese un nombre de producto válido.');
+                    return;
+                }
+
+                if (isNaN(cantidad) || cantidad <= 0) {
+                    alert('Por favor, ingrese una cantidad válida mayor que cero.');
+                    return;
+                }
+
+                // Realizar una solicitud AJAX para obtener la información completa del producto seleccionado
+                $.ajax({
+                    url: '/obtener-detalles-producto',
+                    method: 'GET',
+                    data: {
+                        searchTerm: productoSeleccionado
+                    },
+                    success: function (data) {
+                        if (data.error) {
+                            alert(`Error al obtener detalles del producto: ${data.error}`);
+                        } else if (data.productos.length === 0) {
+                            alert(
+                                `No se encontró información completa para el producto ${productoSeleccionado}.`
+                                );
+                        } else {
+                            const productoEncontrado = data.productos[0];
+                            const stockProducto = productoEncontrado.CantidadStock;
+                            const precio = parseFloat(productoEncontrado.PrecioProducto);
+                            const productoID = productoEncontrado.IDProducto;
+
+                            if (isNaN(stockProducto) || stockProducto <= 0 || isNaN(precio) || precio <=
+                                0) {
+                                let mensajeError = 'Los siguientes detalles del producto no son válidos:';
+                                if (isNaN(stockProducto)) {
+                                    mensajeError += `\n- Stock: ${productoEncontrado.CantidadStock}`;
+                                }
+                                if (stockProducto <= 0) {
+                                    mensajeError += '\n- Stock debe ser mayor que 0.';
+                                }
+                                if (isNaN(precio)) {
+                                    mensajeError += `\n- Precio: ${productoEncontrado.PrecioProducto}`;
+                                }
+                                if (precio <= 0) {
+                                    mensajeError += '\n- Precio debe ser mayor que 0.';
+                                }
+                                alert(mensajeError);
+                                return;
+                            }
+
+                            if (cantidad > stockProducto) {
+                                alert(`No hay suficiente stock para el producto ${productoSeleccionado}.`);
+                                return;
+                            }
+
+                            const nombreProducto = productoSeleccionado;
+
+                            if (!productosAgregados[productoID]) {
+                                productosAgregados[productoID] = {
+                                    productoID: productoID,
+                                    cantidad: cantidad,
+                                    nombre: nombreProducto,
+                                    precio: precio
+                                };
+                            } else {
+                                productosAgregados[productoID].cantidad += cantidad;
+                            }
+
+                            contadorProductos++;
+                            actualizarListaDetallesVenta();
+                            actualizarTotales();
+
+                            // Limpia el campo de búsqueda de productos y restablece la cantidad a 1
+                            productoInput.value = '';
+                            cantidadInput.value = '1';
+
+                            // Agrega una alerta para depuración
+                            alert('Producto agregado con éxito.');
+
+                            // Después de obtener todos los datos necesarios, puedes incluir "ventaCancelada" en los datos del formulario.
+                            const datosFormulario = {
+                                cliente: clienteSeleccionado,
+                                totalVenta: totalVentaInput.value,
+                                costosExtra: costosExtraInput.value,
+                                totalFinal: totalFinalInput.value,
+                                metodoPago: metodoPagoSelect.value,
+                                productosAgregados: JSON.stringify(productosAgregados),
+                                ventaCancelada: ventaCancelada // Nuevo campo
+                            };
+
+                            // Enviar la solicitud al servidor
+                            $.ajax({
+                                url: '/guardar-venta',
+                                method: 'POST',
+                                data: datosFormulario,
+                                success: function (response) {
+                                    // Manejar la respuesta del servidor si es necesario
+                                    // Por ejemplo, redirigir a una página de confirmación de venta
+                                    window.location.href = '/venta-confirmada';
+                                },
+                                error: function (error) {
+                                    console.error('Error al guardar la venta:', error);
+                                    alert(
+                                        'Error al guardar la venta. Por favor, inténtelo de nuevo.'
+                                        );
+                                }
+                            });
+                        }
+                    },
+
+
+                    error: function (error) {
+                        console.error('Error al obtener la información del producto:', error);
+                        alert('Error al obtener la información del producto. Por favor, intente de nuevo.');
+                    }
+                });
+
+                console.log('Enviando solicitud al servidor para el producto:', productoSeleccionado);
+            }
+
+            function actualizarListaDetallesVenta() {
+                const detalleVentaList = document.getElementById('detalleVentaList');
+                detalleVentaList.innerHTML = '';
+
+                for (const productoID in productosAgregados) {
+                    if (productosAgregados.hasOwnProperty(productoID)) {
+                        const producto = productosAgregados[productoID];
+                        if (producto && producto.precio !== undefined) {
+                            const totalProducto = (producto.cantidad * producto.precio).toFixed(2);
+                            detalleVentaList.innerHTML += `
+                        <tr class="border-t">
+                            <td class="py-2 px-4">${producto.cantidad}</td>
+                            <td class="py-2 px-4">${producto.nombre}</td>
+                            <td class="py-2 px-4">$${producto.precio.toFixed(2)}</td>
+                            <td class="py-2 px-4">$${totalProducto}</td>
+                        </tr>`;
+                        }
+                    }
+                }
+            }
+
+            function actualizarTotales() {
+                const totalVentaInput = document.getElementById('totalVenta');
+                const totalFinalInput = document.getElementById('totalFinal');
+
+                const totalVenta = Object.values(productosAgregados).reduce((total, producto) => total + (producto
+                    .cantidad * producto.precio), 0);
+                totalVentaInput.value = `$${totalVenta.toFixed(2)}`;
+
+                const costosExtraInput = document.getElementById('costosExtra');
+                const costosExtra = parseFloat(costosExtraInput.value.trim().replace('$', '')) || 0;
+                const totalFinal = totalVenta + costosExtra;
+                totalFinalInput.value = `$${totalFinal.toFixed(2)}`;
+            }
+
+            function validarVenta() {
+                if (Object.keys(productosAgregados).length === 0) {
+                    alert('Debes seleccionar al menos un producto antes de realizar la venta.');
+                    return false;
+                }
+
+                return true;
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const clienteSelect = document.getElementById('cliente');
+
+                const agregarProductoBtn = document.getElementById('agregarProducto');
+                const agregarCostoBtn = document.getElementById('agregarCosto');
+                const ventaForm = document.querySelector(
+                    'form'); // Agrega esto para obtener una referencia al formulario
+
+                agregarProductoBtn.addEventListener('click', agregarProducto);
+
+                agregarCostoBtn.addEventListener('click', () => {
+                    const costosExtraInput = document.getElementById('costosExtra');
+                    const costoExtraValue = parseFloat(costosExtraInput.value.trim().replace('$',
+                        '')) || 0;
+
+                    if (!isNaN(costoExtraValue)) {
+                        costosExtra += costoExtraValue;
+                        costosExtraInput.value = costosExtra.toFixed(2);
+
+                        actualizarTotales();
+                    } else {
+                        console.error('El valor de costos adicionales no es válido.');
+                    }
+                });
+
+                ventaForm.addEventListener('submit', (event) => {
+                    // Previene la acción predeterminada del formulario (redirección)
+                    event.preventDefault();
+
+                    const productosAgregadosInput = document.getElementById('productosAgregados');
+                    productosAgregadosInput.value = JSON.stringify(productosAgregados);
+                    const clienteInput = document.getElementById('cliente');
+
+                    let clienteSeleccionado = clienteSelect.value;
+
+                    if (clienteSeleccionado === '') {
+                        const fechaActual = new Date();
+                        const formattedFecha = fechaActual.toISOString().substring(0, 16).replace(
+                            /[-T:]/g, '-');
+                        clienteSeleccionado = `cliente-${formattedFecha}`;
+                        clienteSelect.value = clienteSeleccionado;
+                    }
+
+                    // Después de realizar todas las operaciones necesarias, puedes enviar el formulario manualmente
+                    ventaForm.submit();
+                });
+            });
+        </script>
+
+    </div>
+</body>
+
+</html>

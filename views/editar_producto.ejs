@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Producto</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+    <header>
+        <nav class="bg-white shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <a href="/" class="logo me-auto"><img src="/img/logo4.png" alt="" class="w-44 h-auto"></a>
+                    <div class="flex space-x-4">
+                        <a class="text-gray-600 hover:text-blue-500" href="/inventario-productos">Inventario productos</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/clientes">Cliente</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/ventas">Ventas</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/perfil">Mi perfil</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/cerrar-sesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="bg-white p-6 shadow-md rounded-md mx-auto max-w-xl mt-8">
+        <h1 class="text-2xl font-semibold mb-4">Editar Producto</h1>
+
+        <form method="POST" action="/editar-producto/<%= producto.IDProducto %>">
+            <div class="mb-4">
+                <label for="nombre" class="block text-gray-700 font-semibold">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" value="<%= producto.NombreProducto %>" required class="mt-1 px-3 py-2 w-full border rounded-md focus:ring focus:ring-blue-300">
+            </div>
+
+            <div class="mb-4">
+                <label for="precioCompra" class="block text-gray-700 font-semibold">Precio de Compra:</label>
+                <input type="number" id="precioCompra" name="precioCompra" value="<%= producto.PrecioCompra %>" step="0.01" required class="mt-1 px-3 py-2 w-full border rounded-md focus:ring focus:ring-blue-300">
+            </div>
+
+            <div class="mb-4">
+                <label for="precio" class="block text-gray-700 font-semibold">Precio de venta :</label>
+                <input type="number" id="precio" name="precio" value="<%= producto.PrecioProducto %>" step="0.01" required class="mt-1 px-3 py-2 w-full border rounded-md focus:ring focus:ring-blue-300">
+            </div>
+
+            <div class="mb-4">
+                <label for="cantidad" class="block text-gray-700 font-semibold">Cantidad en Stock:</label>
+                <input type="number" id="cantidad" name="cantidad" value="<%= producto.CantidadStock %>" required class="mt-1 px-3 py-2 w-full border rounded-md focus:ring focus:ring-blue-300">
+            </div>
+
+            <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200 ease-in-out">Guardar Cambios</button>
+        </form>
+    </div>
+</body>
+</html>

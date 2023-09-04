@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <!-- Favicons -->
+
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/vendor/animate.css/animate.min.css" rel="stylesheet">
+    <link href="/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+
+    <link href="/css/style.css" rel="stylesheet">
+    <style>
+        /* Estilos personalizados */
+        .primary-blue {
+            color: #007bff;
+        }
+
+        .primary-red {
+            color: #dc3545;
+        }
+
+        .btn-inscripcion {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-inscripcion:hover {
+            background-color: #218838;
+        }
+
+        .alert-message {
+            background-color: #17a2b8;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .welcome-section {
+            background-color: #f8f9fa;
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .welcome-section h1 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .welcome-section p {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 0;
+        }
+
+        .courses-section {
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .courses-section h2 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+        .course-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .course-card h3 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .course-card p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .course-card button {
+            font-size: 16px;
+        }
+
+        footer {
+            background-color: #f8f9fa;
+            padding: 20px 0;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="bg-white shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <!-- <a class="text-xl font-semibold" href="/">La Patrona</a> -->
+                    <a href="/" class="logo me-auto"><img src="/img/logo4.png" alt="" class="w-44 h-auto"></a>
+
+                    
+                    <div class="flex space-x-4">
+                        <!-- <a class="text-gray-600 hover:text-blue-500" href="/iniciar-sesion">Admininistrador</a> -->
+                        <a class="text-gray-600 hover:text-blue-500" href="/inventario-productos">Inventario productos</a>
+     
+                        <a class="text-gray-600 hover:text-blue-500" href="/ventas">Ventas</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/perfil">Mi perfil</a>
+                        <a class="text-gray-600 hover:text-blue-500" href="/cerrar-sesion">Cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <main>
+
+
+        <section class="welcome-section">
+            <div class="container">
+                <h1 style="color: #0b245a;">Bienvenido <%= nombreUsuario %>!</h1>
+                <p style="color: #333;">¡Gracias por iniciar sesión en la patrona discoteca Aquí puedes administrar la discotca.</p>
+            </div>
+        </section>
+
+        <div class="bg-gray-100 py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+       
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 shadow-md rounded-md">
+                        <h2 class="text-xl font-semibold mb-2">Inventario productos</h2>
+                        <p class="text-gray-600 mb-4">Aquí puedes realizar agregar, eliminar y borrar productos.</p>
+                        <a href="/inventario-productos"
+                            class="block w-full bg-blue-500 text-white py-2 px-4 rounded-md text-center hover:bg-blue-600 transition duration-200 ease-in-out">Inventario productos</a>
+                    </div>
+    
+                    <div class="bg-white p-6 shadow-md rounded-md">
+                        <h2 class="text-xl font-semibold mb-2">Realizar ventas</h2>
+                        <p class="text-gray-600 mb-4">Aquí puedes realizar acciones relacionadas con hacer ventas.</p>
+                        <a href="/realizar-venta"
+                            class="block w-full bg-green-500 text-white py-2 px-4 rounded-md text-center hover:bg-green-600 transition duration-200 ease-in-out">Administrar ventas</a>
+                    </div>
+         
+                    <div class="bg-white p-6 shadow-md rounded-md">
+                        <h2 class="text-xl font-semibold mb-2">Ventas Registradas</h2>
+                        <p class="text-gray-600 mb-4">Aquí puedes ver las ventas realizadas.</p>
+                        <a href="/ventas"
+                            class="block w-full bg-yellow-500 text-white py-2 px-4 rounded-md text-center hover:bg-yellow-600 transition duration-200 ease-in-out">Administrar ventas</a>
+                    </div>
+   
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+
+
+    <div id="preloader"></div>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="/vendor/purecounter/purecounter.js"></script>
+    <script src="/vendor/aos/aos.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="/vendor/php-email-form/validate.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="/js/main.js"></script>
+
+</body>
+
+</html>
